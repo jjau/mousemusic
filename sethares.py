@@ -24,3 +24,16 @@ def  tonal_dissonance(f1, f2, v1=1, v2=1):
     f_diff = abs(f2-f1) 
     diss = v1*v2*(np.exp(-a*s*f_diff) - np.exp(-b*s*f_diff))
     return diss 
+
+def dissonance_curve(f0, n_octaves=1, cent_hop = 10):
+	"""
+	computes dissonance between a single tone at frequency 
+	f0 and a range of frequencies spanning n_octaves over f0 
+	sampled every cent_hop cents per semi-tone
+	"""
+	nfreqs = 1200/cent_hop #number of sampling points in an octave
+	freqs = f0*np.exp2(range(0,nfreqs)*cent_hop/1200)
+	diss = [0]*nfreqs 
+	for i,freq in enumerate(freqs):
+		diss[i] = tonal_dissonance(f0,freq)
+	return {'frequencies': freqs, 'dissonance': diss}
